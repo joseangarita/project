@@ -3,7 +3,7 @@ import json
 import os
 
 EXCEL_FILE = 'Tramos.xlsx'
-OUTPUT_HTML = 'Dashboard_Interactivo.html'
+OUTPUT_HTML = 'index.html'
 
 def parse_float(val):
     try:
