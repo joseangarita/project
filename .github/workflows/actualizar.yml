@@ -1,0 +1,30 @@
+name: Actualizar Dashboard
+on:
+  push:
+    paths:
+      - 'Tramos.xlsx' # Se ejecuta solo si actualizas el Excel
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Instalar dependencias
+        run: pip install pandas openpyxl
+        
+      - name: Ejecutar script
+        run: python actualizar_dashboard.py
+        
+      - name: Subir cambios a GitHub
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add Dashboard_Interactivo.html
+          git commit -m "Actualizar dashboard automáticamente" || echo "No hay cambios"
+          git push
