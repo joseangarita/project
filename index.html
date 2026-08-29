@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Monitoreo de Tramos</title>
+    <title>Dashboard Enlaces</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -13,7 +13,7 @@
     <header class="mb-8 border-b border-slate-800 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold text-sky-400 flex items-center gap-3">
-                <i data-lucide="activity"></i> Dashboard Monitoreo de Tramos
+                <i data-lucide="activity"></i> Dashboard Monitoreo de Enlaces
             </h1>
             <p class="text-slate-400 text-sm mt-1">Sincronizado dinámicamente desde Tramos.xlsx</p>
         </div>
@@ -23,11 +23,12 @@
     </header>
 
     <!-- Filtros -->
+    <!-- Campos para filtrar-->
     <section class="bg-slate-800/60 border border-slate-700/60 p-5 rounded-xl mb-8 shadow-xl backdrop-blur-sm">
         <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
             <i data-lucide="filter" class="w-4 h-4 text-sky-400"></i> Buscadores Libres
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div>
                 <label for="filterZona" class="block text-xs font-semibold text-slate-300 uppercase mb-2">Zona</label>
                 <input type="text" id="filterZona" onkeyup="applyFilters()" placeholder="Buscar zona..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-500">
@@ -39,6 +40,10 @@
             <div>
                 <label for="filterNodoSelect" class="block text-xs font-semibold text-slate-300 uppercase mb-2">Nodo (Origen/Destino)</label>
                 <input type="text" id="filterNodoSelect" onkeyup="applyFilters()" placeholder="Buscar nodo..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-500">
+            </div>
+            <div>
+                <label for="filterIp" class="block text-xs font-semibold text-slate-300 uppercase mb-2">IP Nodo (Ori/Dest)</label>
+                <input type="text" id="filterIp" onkeyup="applyFilters()" placeholder="Buscar IP..." class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-500">
             </div>
             <div>
                 <label for="filterTramo" class="block text-xs font-semibold text-slate-300 uppercase mb-2">Nombre de Enlace / Tramo</label>
@@ -99,12 +104,15 @@
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
                     <tr class="bg-slate-900/80 text-slate-400 uppercase text-xs font-semibold tracking-wider border-b border-slate-700">
+                        <!-- Filas de la tabla-->
                         <th class="p-4">Zona</th>
                         <th class="p-4">Ciudad</th>
                         <th class="p-4">Nombre de Enlace</th>
+                        <th class="p-4">Nodo Origen</th>
                         <th class="p-4">RX Origen (dBm)</th>
                         <th class="p-4">CRC/Errors Origen</th>
-                        <th class="p-4">RX Destino (dBm)</th>
+                        <th class="p-4">Nodo Destino</th>
+						<th class="p-4">RX Destino (dBm)</th>
                         <th class="p-4">CRC/Errors Destino</th>
                         <th class="p-4 text-center">Estado General</th>
                     </tr>
@@ -192,8 +200,10 @@
                     <td class="p-4 text-xs text-slate-400 font-semibold">${item.zona}</td>
                     <td class="p-4 font-semibold text-slate-200">${item.ciudad}</td>
                     <td class="p-4 font-mono text-xs text-sky-300">${item.enlace}</td>
+                    <td class="p-4 font-mono">${item.nodoOrigen}</td>
                     <td class="p-4 font-mono">${item.rxOrigen}</td>
                     <td class="p-4 font-mono">${item.crcOrigen}</td>
+                    <td class="p-4 font-mono">${item.nodoDestino}</td>
                     <td class="p-4 font-mono">${item.rxDestino}</td>
                     <td class="p-4 font-mono">${item.crcDestino}</td>
                     <td class="p-4 text-center">
