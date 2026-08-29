@@ -49,6 +49,8 @@ def generar_dashboard():
         crc_origen = parse_str(row['CRC/Errors Origen']) if 'CRC/Errors Origen' in df.columns else 'N/A'
         rx_destino = parse_str(row['RX Destino (dBm)']) if 'RX Destino (dBm)' in df.columns else 'N/A'
         crc_destino = parse_str(row['CRC/Errors Destino']) if 'CRC/Errors Destino' in df.columns else 'N/A'
+        ip_origen = parse_str(row['IP Origen']) if 'IP Origen' in df.columns else ''
+        ip_destino = parse_str(row['IP Destino']) if 'IP Destino' in df.columns else ''
 
         data_list.append({
             "zona": zona,
@@ -61,7 +63,9 @@ def generar_dashboard():
             "crcOrigen": crc_origen,
             "rxDestino": rx_destino,
             "crcDestino": crc_destino,
-            "estado": estado
+            "estado": estado,
+            "ipOrigen": ip_origen,
+            "ipDestino": ip_destino
         })
 
     json_data = json.dumps(data_list, ensure_ascii=False)
@@ -196,20 +200,26 @@ def generar_dashboard():
             const searchCiudad = document.getElementById("filterCiudad").value.toLowerCase().trim();
             const searchNodo = document.getElementById("filterNodoSelect").value.toLowerCase().trim();
             const searchTramo = document.getElementById("filterTramo").value.toLowerCase().trim();
+            const searchIp = document.getElementById("filterIp").value.toLowerCase().trim();
 
             const filteredData = rawData.filter(item => {
+                // Filtrar por Zona
                 const matchZona = searchZona === "" || (item.zona && item.zona.toLowerCase().includes(searchZona));
+                // Filtrar por Ciudad
                 const matchCiudad = searchCiudad === "" || (item.ciudad && item.ciudad.toLowerCase().includes(searchCiudad));
-                
                 // La búsqueda por nodo sigue funcionando buscando en las propiedades nodoOrigen y nodoDestino 
                 // aunque no estén visibles en la tabla.
                 const nodoO = item.nodoOrigen ? item.nodoOrigen.toLowerCase() : "";
                 const nodoD = item.nodoDestino ? item.nodoDestino.toLowerCase() : "";
                 const matchNodo = searchNodo === "" || nodoO.includes(searchNodo) || nodoD.includes(searchNodo);
-                
+                // Buscar por Ip Nodo origen y/o destino
+                const ipO = item.ipOrigen ? item.ipOrigen.toLowerCase() : "";
+                const ipD = item.ipDestino ? item.ipDestino.toLowerCase() : "";
+                const matchIp = searchIp === "" || ipO.includes(searchIp) || ipD.includes(searchIp);
+                // Filtrar por Nombre Tramo
                 const matchTramo = searchTramo === "" || (item.enlace && item.enlace.toLowerCase().includes(searchTramo));
                 
-                return matchZona && matchCiudad && matchNodo && matchTramo;
+                return matchZona && matchCiudad && matchNodo && matchIp && matchTramo;
             });
 
             updateKPIs(filteredData);
